@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+// import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  const [repos, setRepos] = useState([{}]);
+
+  useEffect( () => 
+  {
+    async function getRepos() 
+    {
+      var url = 'https://api.github.com/users/shkhaider2015/repos'
+      const response = await fetch(url)
+      const data = await response.json()
+      console.log(data)
+      setRepos(data)
+    }
+    getRepos()
+
+
+
+    // fetch('https://jsonplaceholder.typicode.com/posts/1')
+    //   .then(response => response.json())
+    //   .then(json => {
+    //     setData(json)
+    //   } )
+
+  },
+    []
+  )
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ul>
+        {
+          repos.map((repoObj, index) => {
+            return (<li key={index}> {repoObj.name} </li>)
+          })
+        }
+      </ul>
     </div>
   );
 }
